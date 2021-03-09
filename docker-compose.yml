@@ -1,0 +1,57 @@
+version: "3.3"
+services:
+  react:
+    build:
+      context: ./shopReactJS
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    container_name: react-app
+
+  nodejs:
+    build:
+      context: ./Backend-Shop
+      dockerfile: Dockerfile
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=mysql-app
+      - MYSQL_USER=moeuser
+      - MYSQL_PASS=moepass
+      - MYSQL_DB=myShop
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "1000:1000"
+    container_name: nodejs-app
+
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=moeuser
+      - MYSQL_PASSWORD=moepass
+      - MYSQL_DATABASE=myShop
+    container_name: mysql-app
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "2020:80"
+    environment:
+      - PMA_HOST=mysql-app
+      - PMA_PORT= 3306
+    volumes:
+      - /sessions
+    container_name: phpmyadmin-app
+
+networks:
+  frontend:
+  backend:
