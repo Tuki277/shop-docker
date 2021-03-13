@@ -12,9 +12,9 @@ services:
     build:
       context: ./Backend-Shop
       dockerfile: Dockerfile
-    networks:
-      - frontend
-      - backend
+    # networks:
+    #   - frontend
+    #   - backend
     environment:
       - MYSQL_HOST=mysql-app
       - MYSQL_USER=moeuser
@@ -28,8 +28,8 @@ services:
 
   mysql:
     image: mysql:5.7
-    networks:
-      - backend
+    # networks:
+    #   - backend
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=moeuser
@@ -41,8 +41,8 @@ services:
     image: phpmyadmin/phpmyadmin:4.7
     depends_on:
       - mysql
-    networks:
-      - backend
+    # networks:
+    #   - backend
     ports:
       - "2020:80"
     environment:
@@ -52,6 +52,6 @@ services:
       - /sessions
     container_name: phpmyadmin-app
 
-networks:
-  frontend:
-  backend:
+# networks:
+#   frontend:
+#   backend:
